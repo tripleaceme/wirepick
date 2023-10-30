@@ -6,24 +6,37 @@ models:
         materialized: view
 # Implementing a generic test options for the columns in the stg_jaffle_shop_customers table. use dbt test to run it. 
 
+      description: Staging customers data.
+
       columns:
-          - name: customer_id
-            tests:
+        - name: customer_id
+          description: Primary key of the customers.
+          tests:
               - unique
               - not_null
+          
+
+        - name: first_name
+          description: Customer first name.
+        
+        - name: last_name
+          description: Customer last name.
 
 
     - name: stg_jaffle_shop_orders
       config:
         materialized: view
+
 # Implementing a generic test options for the columns in the stg_jaffle_shop_orders table. use dbt test to run it. 
       columns:
           - name: order_id
+            description: Primary key of the orders.
             tests:
               - unique
               - not_null
 
           - name: status
+            description: "{{ doc('status_docblock') }}"
             tests:
               - accepted_values:
                    values:
@@ -34,7 +47,11 @@ models:
                       - return_pending
 
           - name: customer_id
+            description: Foreign key of customers_id at dim_customers.
             tests:
             - relationships:
                 to: ref('stg_jaffle_shop_customers')
                 field: customer_id
+
+          - name: order_date
+            description: Date that order was placed by the customer.

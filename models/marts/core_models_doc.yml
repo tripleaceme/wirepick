@@ -13,7 +13,7 @@ models:
         - name: customer_id
           description: Foreign key of customers_id at dim_customers.
 
-        - name: order_date5
+        - name: order_date
           description: Date that order was placed by the customer.
 
         - name: cash_amount

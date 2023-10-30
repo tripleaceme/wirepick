@@ -1,0 +1,30 @@
+version: 
+
+sources:
+    - name: jaffle_shop # can be anything
+      database: dbt-tutorial
+      schema: jaffle_shop
+      tables:
+        - name: customers
+        - name: orders
+        # testing our data source freshness i.e how latest is the data we're using
+          loaded_at_field: _etl_loaded_at # column that indicate when the data was loaded into the orders table
+          freshness:
+              warn_after:  {count: 12, period: hour} # raise a warning if the data is 12 hours outdated
+              error_after: {count: 24, period: hour} # raise an actual error if the data wasn’t refreshed in the past 24 hours
+# Implementing a generic test options for the columns in the orders table. use dbt test --select source:schema_name 
+# dbt test --select source:jaffle_shop
+          columns:
+              - name: id
+                tests:
+                  - unique
+                  - not_null
+              - name: status
+                tests:
+                  - accepted_values:
+                      values:
+                        - completed
+                        - shipped
+                        - returned
+                        - placed
+                        - return_pending

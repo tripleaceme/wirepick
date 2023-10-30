@@ -1,0 +1,9 @@
+version: 
+
+sources:
+    - name: stripe # can be anything
+      database: dbt-tutorial
+      schema: stripe
+      tables:
+        - name: payment
+# dbt test --select source:stripe

@@ -1,0 +1,43 @@
+name: scheduled_run
+
+on:
+  schedule:
+    - cron:  '0 5,17 * * *' # The configured schedule means run the workflow every day at 5 AM and 5 PM UTC.
+env:
+  DBT_PROFILES_DIR: ./
+
+  DBT_GOOGLE_PROJECT_PROD: ${{ secrets.DBT_GOOGLE_PROJECT_PROD }}
+  DBT_GOOGLE_BIGQUERY_DATASET_PROD: ${{ secrets.DBT_GOOGLE_BIGQUERY_DATASET_PROD }}
+  # The DBT_GOOGLE_BIGQUERY_KEYFILE_PROD secret will be written to a json file below
+  DBT_GOOGLE_BIGQUERY_KEYFILE_PROD: ./dbt-service-account.json
+
+jobs:
+  scheduled_run:
+    name: scheduled_run
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out
+        uses: actions/checkout@master
+
+      - uses: actions/setup-python@v1
+        with:
+          python-version: "3.7.x"
+
+      - name: Authenticate using service account
+        run: 'echo "$KEYFILE" > ./dbt-service-account.json'
+        shell: bash
+        env:
+          KEYFILE: ${{secrets.DBT_GOOGLE_BIGQUERY_KEYFILE_PROD}}
+
+      - name: Install dependencies
+        run: |
+          pip install dbt
+          dbt deps --target prod
+      
+      # Add dbt seed or other commands here if needed
+      - name: Run dbt models
+        run: dbt run --target prod
+
+      - name: Test dbt models
+        run: dbt test --target prod

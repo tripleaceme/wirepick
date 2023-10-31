@@ -4,7 +4,7 @@ Categorical data which indicates the status of the order.
 
 It can contain one of the following values:
 
-| is_order_completed | definition                                                |
+| status             | definition                                                |
 |--------------------|-----------------------------------------------------------|
 | completed          | An order that is completed                                |
 | shipped            | An order that is shipped                                  |

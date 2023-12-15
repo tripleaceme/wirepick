@@ -4,6 +4,6 @@ select
     first_name,
     last_name
 
-from {{ source('jaffle_shop', 'customers') }} -- source('schema', 'table')
+from { source('jaffle_shop', 'customers') } -- source('schema', 'table')
 
 -- from `dbt-tutorial.jaffle_shop.customers`  

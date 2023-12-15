@@ -1,5 +1,5 @@
 version: 2
-
+# models documentations
 models:
     - name: stg_jaffle_shop_customers
       config:

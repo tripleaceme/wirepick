@@ -1,5 +1,5 @@
 version: 
-
+# Source table with dbt testing
 sources:
     - name: jaffle_shop # can be anything
       database: dbt-tutorial
